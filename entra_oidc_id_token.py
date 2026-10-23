@@ -49,7 +49,19 @@ def main(args):
         sys.exit(1)
     decoded = jwt.decode(id_token, options={"verify_signature": False})
     print("")
+    print("== ID Token ==")
     print(json.dumps(decoded, indent=4))
+    access_token = response_json["access_token"]
+    # Get userinfo data
+    userinfo_url = "https://graph.microsoft.com/oidc/userinfo"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+    }
+    response = requests.get(userinfo_url, headers=headers)
+    result = response.json()
+    print("")
+    print("== UserInfo Endpoint Response ==")
+    print(json.dumps(result, indent=4))
 
 
 if __name__ == "__main__":
