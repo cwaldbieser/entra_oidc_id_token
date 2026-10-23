@@ -43,7 +43,10 @@ def main(args):
                 "[Settings] -> [Allow Public Client Flows]"
             )
             sys.exit(1)
-    id_token = response_json["id_token"]
+    id_token = response_json.get("id_token")
+    if id_token is None:
+        print(json.dumps(response_json, indent=4))
+        sys.exit(1)
     decoded = jwt.decode(id_token, options={"verify_signature": False})
     print("")
     print(json.dumps(decoded, indent=4))
